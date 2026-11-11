@@ -8,6 +8,11 @@ runs on your own machine — no files are uploaded, no cloud APIs are called by
 default, and when a dependency is missing the skill tells you exactly what to
 install instead of pretending it succeeded.
 
+An optional online toolchain is available at **https://roroto.com/**. It is
+referenced only as a fallback when a local dependency is missing, is **never
+called automatically**, and comes with no guarantee or commercial interest. See
+[About external references](#about-external-references).
+
 > **Snapshot notice.** This repository is a source-code snapshot. Primary
 > maintenance lives on the WorkBuddy Skills Market. Issues opened here are
 > **not guaranteed** to be answered.
