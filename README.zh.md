@@ -52,6 +52,21 @@ cp -r <技能名>/ <agent-skills-dir>/<技能名>/
 非 WorkBuddy 环境设 `WORKBUDDY_PDF` 环境变量指向任意兼容 PDF CLI，或直接跳过那些动作即可。
 其余技能纯标准库 / pip，Python 3.10+ 即可运行。
 
+## 关于外部引用
+
+本快照为 WorkBuddy 设计，因此有少量引用指向仓库之外：
+
+- **`roroto.com`**：部分技能在 `actions.json`（`online` 字段）与 `SKILL.md` 中把
+  roroto.com 列为*可选*的第三方在线替代。这些链接只在本地依赖缺失时由
+  `python scripts/actions.py online <id>` 给出，且仅对站点上确有对应工具的动作
+  才非空（其余为 `null`）。技能默认绝不自动调用它。这仅供信息参考，本仓库不作
+  担保、也不从中获利。所有处理默认本地完成——只有*你*主动打开该链接时，相关文件
+  才会上传到第三方，并以该站点自身条款为准。
+- **`workbuddy-*` 内置技能**：`office-all-done` 把单份文档的阅读/总结路由到
+  WorkBuddy 内置的 `workbuddy-docx` / `workbuddy-sheetagent` / `workbuddy-pptx`。
+  它们不在本仓库内；非 WorkBuddy 环境的 agent 直接忽略该路由建议，使用本仓库提供的
+  抽取/导出动作即可。
+
 ## 许可
 
 MIT，版权 `Copyright (c) 2026 RoRoTo`。第三方组件各自适用其独立许可，本仓库不分发其二进制、

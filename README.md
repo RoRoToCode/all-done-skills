@@ -70,6 +70,24 @@ Each skill validates itself (read-only):
 cd <skill> && python scripts/actions.py check
 ```
 
+## About external references
+
+This snapshot is built for WorkBuddy, so a few references point outside the repo:
+
+- **`roroto.com`** — Some skills list `roroto.com` as an *optional* third-party
+  online alternative in their `actions.json` (`online` field) and `SKILL.md`.
+  These links appear only via `python scripts/actions.py online <id>` when a
+  local dependency is missing, and only for actions that actually have a
+  matching tool on that site (others are `null`). The skill never calls it
+  automatically. This is informational only — the repo gives no guarantee and
+  earns nothing from it. All processing is local by default; a file is sent to
+  a third party only if *you* open that link yourself, under that site's terms.
+- **`workbuddy-*` built-in skills** — `office-all-done` routes single-document
+  reading/summarization to WorkBuddy's built-in `workbuddy-docx` /
+  `workbuddy-sheetagent` / `workbuddy-pptx`. They are not part of this repo; on
+  non-WorkBuddy agents, ignore that routing suggestion and use the
+  extraction/export actions provided here instead.
+
 ## License
 
 MIT — Copyright (c) 2026 RoRoTo. Third-party components keep their own
