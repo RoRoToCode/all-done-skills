@@ -1,0 +1,120 @@
+{
+  "format": "image-all-done/actions-v1",
+  "skill": "image-all-done",
+  "version": "1.4.1",
+  "display_name": "图片全搞定",
+  "online_root": "https://roroto.com",
+  "online_note": "仅当 roroto.com 确有对应工具页时，actions.py online <id> 才给出第三方在线替代链接；该站没有对应工具的动作 online 为 null，依赖缺失时只给本地安装指引。第三方站点的运行方式与隐私政策以它自身声明为准，本技能不作担保。",
+  "actions": [
+    {
+      "id": "img-convert",
+      "name": "格式互转",
+      "desc": "png / jpg / webp / bmp / tiff 之间互转，可选质量与背景处理",
+      "deps": [
+        "PIL"
+      ],
+      "online": "https://roroto.com/tools/image-convert/"
+    },
+    {
+      "id": "img-compress",
+      "name": "压缩体积",
+      "desc": "有损/无损压缩，按目标体积或质量比输出，适合发邮件或网页",
+      "deps": [
+        "PIL"
+      ],
+      "online": "https://roroto.com/tools/image-compress/"
+    },
+    {
+      "id": "img-resize",
+      "name": "改尺寸 / 批量",
+      "desc": "按长边、固定宽高或百分比缩放，支持批量与保持比例",
+      "deps": [
+        "PIL"
+      ],
+      "online": "https://roroto.com/tools/image-resize/"
+    },
+    {
+      "id": "img-crop",
+      "name": "裁剪",
+      "desc": "按比例、固定区域或居中裁剪",
+      "deps": [
+        "PIL"
+      ],
+      "online": "https://roroto.com/tools/image-crop/"
+    },
+    {
+      "id": "img-watermark",
+      "name": "加水印 / 页码",
+      "desc": "文字或图片水印，可调透明度、位置、平铺",
+      "deps": [
+        "PIL"
+      ],
+      "online": "https://roroto.com/tools/image-watermark/"
+    },
+    {
+      "id": "img-rotate",
+      "name": "旋转 / 翻转",
+      "desc": "按 90° 倍数旋转、任意角度、水平/垂直翻转，自动校正 EXIF 方向",
+      "deps": [
+        "PIL"
+      ],
+      "online": null
+    },
+    {
+      "id": "img-merge",
+      "name": "拼图 / 合并",
+      "desc": "多图横向/纵向拼接，或网格拼图",
+      "deps": [
+        "PIL"
+      ],
+      "online": "https://roroto.com/tools/image-collage/"
+    },
+    {
+      "id": "img-bgremove",
+      "name": "智能抠图 / 去背景",
+      "desc": "移除图片背景，输出透明 PNG（本地 rembg 模型）",
+      "deps": [
+        "PIL",
+        "rembg"
+      ],
+      "online": "https://roroto.com/tools/image-remove-bg/"
+    },
+    {
+      "id": "img-upscale",
+      "name": "高清放大 / 修复",
+      "desc": "超分辨率放大并降噪（本地模型，如 Real-ESRGAN）",
+      "deps": [
+        "PIL",
+        "realesrgan"
+      ],
+      "online": null
+    },
+    {
+      "id": "img-ocr",
+      "name": "图片文字识别",
+      "desc": "从图片提取文字，中英文（优先本地 RapidOCR，无外部二进制；Tesseract 可作兜底）",
+      "deps": [
+        "PIL"
+      ],
+      "online": "https://roroto.com/tools/pdf-ocr/"
+    },
+    {
+      "id": "img-batch",
+      "name": "批量处理",
+      "desc": "对目录下全部图片套用同一动作（转格式/压缩/改尺寸/水印）",
+      "deps": [
+        "PIL"
+      ],
+      "online": null
+    },
+    {
+      "id": "img-metadata",
+      "name": "查看 / 清除 EXIF",
+      "desc": "读取拍摄时间、相机、GPS 等元信息，可选清除隐私字段",
+      "deps": [
+        "PIL"
+      ],
+      "online": null
+    }
+  ]
+}

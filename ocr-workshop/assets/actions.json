@@ -1,0 +1,154 @@
+{
+  "format": "ocr-workshop/actions-v1",
+  "skill": "ocr-workshop",
+  "version": "1.4.1",
+  "display_name": "OCR 全搞定",
+  "online_root": "https://roroto.com",
+  "online_note": "仅当 roroto.com 确有对应工具页时，actions.py online <id> 才给出第三方在线替代链接；该站没有对应工具的动作 online 为 null，依赖缺失时只给本地安装指引。第三方站点的运行方式与隐私政策以它自身声明为准，本技能不作担保。",
+  "actions": [
+    {
+      "id": "ocr-image",
+      "label": "图片文字识别",
+      "group": "识别",
+      "triggers": [
+        "OCR",
+        "图片转文字",
+        "图片识别",
+        "截图识别"
+      ],
+      "depends": [
+        "ocr"
+      ],
+      "default_output": "{{stem}}-ocr",
+      "steps": [
+        [
+          "python",
+          "scripts/ocr_cli.py",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "--mode",
+          "image"
+        ]
+      ],
+      "notes": "输出 <stem>.md（全文）与 <stem>.json（含每块坐标与置信度）；表格区域内连续多列会自动还原为 Markdown 表格。",
+      "online": "https://roroto.com"
+    },
+    {
+      "id": "ocr-pdf",
+      "label": "PDF 文字识别",
+      "group": "识别",
+      "triggers": [
+        "PDF文字识别",
+        "扫描件识别",
+        "pdf-ocr",
+        "扫描PDF转文字"
+      ],
+      "depends": [
+        "ocr",
+        "pymupdf"
+      ],
+      "default_output": "{{stem}}-ocr",
+      "steps": [
+        [
+          "python",
+          "scripts/ocr_cli.py",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "--mode",
+          "pdf",
+          "--dpi",
+          "{{dpi}}"
+        ]
+      ],
+      "notes": "逐页渲染后识别，输出 <stem>.md（带 <!-- page N --> 标记）、<stem>.json、pages/page-NNNN.txt。纯文本层 PDF 不需要 OCR，请改用 pdf-workshop 的 pdf-extract。",
+      "online": "https://roroto.com/tools/pdf-ocr/"
+    },
+    {
+      "id": "ocr-batch",
+      "label": "批量识别",
+      "group": "识别",
+      "triggers": [
+        "批量OCR",
+        "批量识别",
+        "目录批量转文字"
+      ],
+      "depends": [
+        "ocr",
+        "pymupdf"
+      ],
+      "default_output": "{{stem}}-ocr",
+      "steps": [
+        [
+          "python",
+          "scripts/ocr_cli.py",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "--mode",
+          "batch"
+        ]
+      ],
+      "notes": "输入可给目录，每份文件一个子目录；汇总信息写在总目录的 manifest.json。",
+      "online": "https://roroto.com"
+    },
+    {
+      "id": "ocr-table",
+      "label": "表格识别",
+      "group": "结构化",
+      "triggers": [
+        "表格识别",
+        "OCR表格",
+        "图片表格转CSV"
+      ],
+      "depends": [
+        "ocr",
+        "pymupdf"
+      ],
+      "default_output": "{{stem}}-ocr",
+      "steps": [
+        [
+          "python",
+          "scripts/ocr_cli.py",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "--mode",
+          "table"
+        ]
+      ],
+      "notes": "按文字框纵坐标聚行、横坐标分列，输出 tables/page-NNNN.csv（UTF-8-BOM，Excel 直接打开不乱码）。无表格时才不生成 CSV。",
+      "online": "https://roroto.com"
+    },
+    {
+      "id": "ocr-searchable-pdf",
+      "label": "扫描件转可搜索 PDF",
+      "group": "PDF 识别",
+      "triggers": [
+        "可搜索PDF",
+        "扫描件加文字层",
+        "searchable pdf"
+      ],
+      "depends": [
+        "ocr",
+        "pymupdf"
+      ],
+      "default_output": "{{stem}}-searchable.pdf",
+      "steps": [
+        [
+          "python",
+          "scripts/ocr_searchable_pdf.py",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "--dpi",
+          "{{dpi}}",
+          "{{extra}}"
+        ]
+      ],
+      "notes": "原图不动，只叠不可见文字层，版式 100% 保留；--extra 可给 --pages 3-5 / --min-score 0.5 / --workdir DIR。",
+      "online": "https://roroto.com"
+    }
+  ]
+}

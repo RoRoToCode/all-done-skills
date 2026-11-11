@@ -1,0 +1,66 @@
+{
+  "format": "text-all-done/actions-v1",
+  "skill": "text-all-done",
+  "version": "1.4.1",
+  "display_name": "文本全搞定",
+  "online_root": null,
+  "online_note": "本技能不提供第三方在线替代方案，所有动作 online 均为 null；依赖缺失时只给本地安装指引，原始文件不上传任何云端或第三方服务器。",
+  "actions": [
+    {
+      "id": "txt-convert",
+      "name": "编码转换",
+      "desc": "嗅探源编码（BOM → UTF-8 → GB18030 → BIG5 → Latin-1 兜底）并转成 UTF-8/UTF-8-BOM/GBK/BIG5/UTF-16，可同时统一换行风格",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "txt-normalize",
+      "name": "文本规范化",
+      "desc": "统一换行（LF/CRLF/CR）、去 BOM、清行尾空白、压缩连续空行、去首尾空行、保证结尾换行",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "txt-dedupe",
+      "name": "按行去重",
+      "desc": "保序或排序去重，可忽略大小写与空白，保留首次或最后一次出现，输出重复项 Top10",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "txt-replace",
+      "name": "查找替换",
+      "desc": "正则批量替换（支持分组引用与前向断言开关），--literal 走纯文本，--dry-run 先看命中数",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "txt-diff",
+      "name": "文本比对",
+      "desc": "两个文件做 unified diff，各自嗅探编码后再比较，输出增删行数与相似度",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "txt-stats",
+      "name": "文本统计",
+      "desc": "字符/行/段落/中英文构成/数字/标点、平均行长、预计阅读时长，以及拉丁词频与汉字字频 Top N",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "txt-split",
+      "name": "文本切分",
+      "desc": "按行数/字符数/字节数切成多份，只在行边界切，超长单行独立成份并告警，自动写 manifest",
+      "deps": [],
+      "optional": [],
+      "online": null
+    }
+  ]
+}

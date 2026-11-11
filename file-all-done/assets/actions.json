@@ -1,0 +1,118 @@
+{
+  "format": "file-all-done/actions-v1",
+  "skill": "file-all-done",
+  "version": "1.4.1",
+  "display_name": "文件全搞定",
+  "online_root": null,
+  "online_note": "本技能不提供第三方在线替代方案，所有动作 online 均为 null；依赖缺失时只给本地安装指引，原始文件不上传任何云端或第三方服务器。",
+  "actions": [
+    {
+      "id": "file-list",
+      "name": "目录清单",
+      "group": "清单与查找",
+      "desc": "扫描目录生成文件清单（路径/体积/时间/扩展名/类型），支持 glob 过滤、排序、JSON/CSV/Markdown 输出与汇总统计",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "file-tree",
+      "name": "目录树",
+      "group": "清单与查找",
+      "desc": "输出文本树形结构，可限制深度与条目数，超限时标记截断",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "file-find",
+      "name": "条件查找",
+      "group": "清单与查找",
+      "desc": "按名称 glob、扩展名、体积区间、最近修改天数组合查找文件",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "file-rename",
+      "name": "批量重命名",
+      "group": "命名与归类",
+      "desc": "按前缀/后缀/序号/正则批量生成新名，默认只预览计划，--apply 才落盘并写 rename-map.json",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "file-organize",
+      "name": "按类型归类",
+      "group": "命名与归类",
+      "desc": "按扩展名/日期/大类把文件复制到子目录，默认预览，--apply 才落盘，绝不移动或删除原文件",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "file-dedupe",
+      "name": "重复文件查找",
+      "group": "查重与校验",
+      "desc": "按体积分组后算内容哈希，输出重复组与可释放体积，只报告不删除",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "file-hash",
+      "name": "计算校验和",
+      "group": "查重与校验",
+      "desc": "对文件或目录计算 sha256/md5/blake2b，输出可作为校验清单的 JSON",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "file-verify",
+      "name": "复核校验和",
+      "group": "查重与校验",
+      "desc": "按 JSON 清单或 sha256sum 文本重新计算，逐条给出 ok / mismatch / missing",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "file-size",
+      "name": "体积报告",
+      "group": "度量与比对",
+      "desc": "大文件 Top N、空文件、按扩展名聚合与总占用统计",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "file-compare",
+      "name": "目录比对",
+      "group": "度量与比对",
+      "desc": "按相对路径比较两个目录，输出仅左有/仅右有/内容不同/完全一致四类",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "file-metadata",
+      "name": "文件元数据",
+      "group": "度量与比对",
+      "desc": "读取体积、创建/修改时间、扩展名、MIME 猜测、权限与链接属性",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "file-copy",
+      "name": "安全批量复制",
+      "group": "度量与比对",
+      "desc": "把多个文件或目录复制到目标目录，重名自动避让，保留相对结构，不改动原件",
+      "deps": [],
+      "optional": [],
+      "online": null
+    }
+  ]
+}

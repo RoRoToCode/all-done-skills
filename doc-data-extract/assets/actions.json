@@ -1,0 +1,355 @@
+{
+  "format": "doc-data-extract/actions-v1",
+  "skill": "doc-data-extract",
+  "version": "1.4.1",
+  "display_name": "文档数据抽取",
+  "online_root": "https://roroto.com",
+  "online_note": "仅当 roroto.com 确有对应工具页时，actions.py online <id> 才给出第三方在线替代链接；该站没有对应工具的动作 online 为 null，依赖缺失时只给本地安装指引。第三方站点的运行方式与隐私政策以它自身声明为准，本技能不作担保。",
+  "actions": [
+    {
+      "id": "doc-to-text",
+      "label": "文档转文本",
+      "group": "基础转换",
+      "triggers": [
+        "文档转文本",
+        "提取正文",
+        "导出 Markdown",
+        "doc to text",
+        "转 md"
+      ],
+      "depends": [
+        "cli",
+        "python-docx",
+        "openpyxl",
+        "python-pptx",
+        "bs4"
+      ],
+      "default_output": "{{stem}}.md",
+      "steps": [
+        [
+          "python",
+          "scripts/doc_to_text.py",
+          "{{input}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "多格式统一抽取为 Markdown：PDF 优先走宿主 CLI，Office/HTML 走对应库，缺库时如实说明。",
+      "online": "https://roroto.com/tools/pdf-to-text/"
+    },
+    {
+      "id": "doc-convert",
+      "label": "格式转换",
+      "group": "基础转换",
+      "triggers": [
+        "文档转换",
+        "格式转换",
+        "转 PDF",
+        "转 CSV",
+        "doc convert"
+      ],
+      "depends": [
+        "cli",
+        "python-docx",
+        "openpyxl",
+        "python-pptx"
+      ],
+      "default_output": "{{stem}}.{{fmt}}",
+      "steps": [
+        [
+          "python",
+          "scripts/doc_convert.py",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "--to",
+          "{{fmt}}"
+        ]
+      ],
+      "notes": "支持 md/txt/csv 之间互转，以及任意文档抽取为纯文本；Office 转 PDF 需本机有对应库或浏览器。",
+      "online": "https://roroto.com/tools/pdf-to-markdown/"
+    },
+    {
+      "id": "extract-tables",
+      "label": "抽取表格",
+      "group": "内容抽取",
+      "triggers": [
+        "抽取表格",
+        "表格转 Excel",
+        "表格转 CSV",
+        "提取表格"
+      ],
+      "depends": [
+        "cli",
+        "openpyxl",
+        "python-docx"
+      ],
+      "default_output": "{{stem}}-tables",
+      "steps": [
+        [
+          "python",
+          "scripts/extract_tables.py",
+          "{{input}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "PDF 优先用宿主 CLI -f table；Office 用对应库解析；每张表导出一个 CSV。合并单元格与跨页表为近似还原。",
+      "online": "https://roroto.com/tools/pdf-to-excel/"
+    },
+    {
+      "id": "extract-fields",
+      "label": "字段抽取",
+      "group": "内容抽取",
+      "triggers": [
+        "字段抽取",
+        "抽取字段",
+        "提取关键信息",
+        "结构化抽取"
+      ],
+      "depends": [
+        "cli",
+        "python-docx",
+        "openpyxl",
+        "python-pptx",
+        "bs4"
+      ],
+      "default_output": "{{stem}}-fields.json",
+      "steps": [
+        [
+          "python",
+          "scripts/extract_fields.py",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "--preset",
+          "{{preset}}"
+        ]
+      ],
+      "notes": "预设 general / contract / finance / invoice；正则命中只是候选，必须回看原文档确认单位与上下文。",
+      "online": null
+    },
+    {
+      "id": "extract-kv",
+      "label": "键值对抽取",
+      "group": "内容抽取",
+      "triggers": [
+        "键值对",
+        "表单抽取",
+        "KV 抽取",
+        "抽取表单"
+      ],
+      "depends": [
+        "cli",
+        "python-docx",
+        "openpyxl",
+        "bs4"
+      ],
+      "default_output": "{{stem}}-kv.json",
+      "steps": [
+        [
+          "python",
+          "scripts/extract_kv.py",
+          "{{input}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "识别「键：值」「键 值」「Key: Value」结构；表单、配置、票据类文档优先。",
+      "online": null
+    },
+    {
+      "id": "doc-structure",
+      "label": "版面结构化",
+      "group": "内容抽取",
+      "triggers": [
+        "PDF 结构化",
+        "版面分析",
+        "文档结构化",
+        "提取章节",
+        "生成大纲",
+        "doc structure"
+      ],
+      "depends": [
+        "cli",
+        "python-docx",
+        "openpyxl",
+        "python-pptx",
+        "bs4"
+      ],
+      "default_output": "{{stem}}-structure.json",
+      "steps": [
+        [
+          "python",
+          "scripts/doc_structure.py",
+          "{{input}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "按页输出 block 级结构（标题层级 / 段落 / 列表 / 表格）并生成大纲，每块带页码可回溯。标题识别为启发式规则，扫描件需先 OCR。",
+      "online": "https://roroto.com/tools/pdf-to-markdown/"
+    },
+    {
+      "id": "extract-entities",
+      "label": "实体抽取",
+      "group": "内容抽取",
+      "triggers": [
+        "实体抽取",
+        "命名实体",
+        "NER",
+        "抽取人名",
+        "抽取公司",
+        "抽取地址"
+      ],
+      "depends": [
+        "cli",
+        "python-docx",
+        "openpyxl",
+        "python-pptx",
+        "bs4"
+      ],
+      "default_output": "{{stem}}-entities.json",
+      "steps": [
+        [
+          "python",
+          "scripts/extract_entities.py",
+          "{{input}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "规则 + 词典抽取 date/money/percent/email/phone/id_card/uscc/bank_account/url/org/person/address，按重叠优先级去重并记录页码与上下文。人名、机构为候选，需回看原文。",
+      "online": null
+    },
+    {
+      "id": "template-extract",
+      "label": "模板抽取",
+      "group": "内容抽取",
+      "triggers": [
+        "模板抽取",
+        "按模板提取",
+        "自定义字段",
+        "票据批量抽取",
+        "template extract"
+      ],
+      "depends": [
+        "cli",
+        "python-docx",
+        "openpyxl",
+        "python-pptx",
+        "bs4"
+      ],
+      "default_output": "{{stem}}-template.json",
+      "steps": [
+        [
+          "python",
+          "scripts/template_extract.py",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "--template",
+          "{{template}}"
+        ]
+      ],
+      "notes": "按 --template 指定的 JSON 模板抓值，字段支持 patterns / label / between 三种写法，可标 required 校验必填。适合票据、合同、表单等固定版式。",
+      "online": null
+    },
+    {
+      "id": "batch-extract",
+      "label": "批量抽取",
+      "group": "批量处理",
+      "triggers": [
+        "批量抽取",
+        "文件夹抽取",
+        "批量字段",
+        "批量提取"
+      ],
+      "depends": [
+        "cli",
+        "python-docx",
+        "openpyxl",
+        "python-pptx",
+        "bs4"
+      ],
+      "default_output": "batch-result",
+      "steps": [
+        [
+          "python",
+          "scripts/batch_extract.py",
+          "--inputs",
+          "{{inputs}}",
+          "-o",
+          "{{output}}",
+          "--preset",
+          "{{preset}}"
+        ]
+      ],
+      "notes": "对目录/多文件批量抽取字段并汇总为 CSV + JSON；每文件独立记录成功/失败，失败不计入汇总。",
+      "online": null
+    },
+    {
+      "id": "doc-search",
+      "label": "跨文档检索",
+      "group": "检索分析",
+      "triggers": [
+        "跨文档检索",
+        "多文档搜索",
+        "文档检索",
+        "全文检索"
+      ],
+      "depends": [
+        "cli",
+        "python-docx",
+        "openpyxl",
+        "python-pptx",
+        "bs4"
+      ],
+      "default_output": "search-result.json",
+      "steps": [
+        [
+          "python",
+          "scripts/doc_search.py",
+          "{{query}}",
+          "--inputs",
+          "{{inputs}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "建立文档索引后检索，保留来源文件名与位置；--regex 打开正则。结果须回看原文档确认。",
+      "online": "https://roroto.com/tools/pdf-to-text/"
+    },
+    {
+      "id": "doc-compare",
+      "label": "文档对比",
+      "group": "检索分析",
+      "triggers": [
+        "文档对比",
+        "对比文档",
+        "差异对比",
+        "compare docs"
+      ],
+      "depends": [
+        "cli",
+        "python-docx",
+        "openpyxl",
+        "python-pptx",
+        "bs4"
+      ],
+      "default_output": "compare-result.json",
+      "steps": [
+        [
+          "python",
+          "scripts/doc_compare.py",
+          "--inputs",
+          "{{inputs}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "行级 SequenceMatcher 相似度 + 内容集合 Jaccard，列出仅出现在某一方的行；适合版本差异，不适合语义等价判断。",
+      "online": "https://roroto.com/tools/pdf-compare/"
+    }
+  ]
+}

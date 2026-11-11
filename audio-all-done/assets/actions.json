@@ -1,0 +1,149 @@
+{
+  "format": "audio-all-done/actions-v1",
+  "skill": "audio-all-done",
+  "version": "1.4.1",
+  "display_name": "音频全搞定",
+  "online_root": null,
+  "online_note": "本技能不提供第三方在线替代方案，所有动作 online 均为 null；依赖缺失时只给本地安装指引，原始文件不上传任何云端或第三方服务器。",
+  "actions": [
+    {
+      "id": "aud-convert",
+      "name": "格式转换",
+      "desc": "mp3 / wav / flac / m4a / aac / ogg / opus / wma 之间互转，可指定编码器与码率",
+      "deps": [
+        "ffmpeg"
+      ],
+      "online": null
+    },
+    {
+      "id": "aud-compress",
+      "name": "压缩体积",
+      "desc": "按目标码率或目标体积压缩有损音频，自动按格式选编码器",
+      "deps": [
+        "ffmpeg",
+        "ffprobe"
+      ],
+      "online": null
+    },
+    {
+      "id": "aud-resample",
+      "name": "采样率 / 声道 / 位深",
+      "desc": "重采样、单声道/立体声转换、WAV 位深转换",
+      "deps": [
+        "ffmpeg"
+      ],
+      "online": null
+    },
+    {
+      "id": "aud-trim",
+      "name": "截取片段",
+      "desc": "按开始/结束时间或时长裁出一段，可流拷贝或精准重编码",
+      "deps": [
+        "ffmpeg"
+      ],
+      "online": null
+    },
+    {
+      "id": "aud-concat",
+      "name": "拼接合并",
+      "desc": "多段音频首尾相接合并为一个，编码不一致时可重编码",
+      "deps": [
+        "ffmpeg"
+      ],
+      "online": null
+    },
+    {
+      "id": "aud-split",
+      "name": "按静音 / 等长切分",
+      "desc": "静音检测找句子边界切分，或按固定秒数等分，输出到目录",
+      "deps": [
+        "ffmpeg",
+        "ffprobe"
+      ],
+      "online": null
+    },
+    {
+      "id": "aud-speed",
+      "name": "变速 / 变调",
+      "desc": "atempo 变速（0.5-8 倍自动串联），可选半音升降调且保持时长",
+      "deps": [
+        "ffmpeg",
+        "ffprobe"
+      ],
+      "online": null
+    },
+    {
+      "id": "aud-volume",
+      "name": "音量增益",
+      "desc": "按 dB 或倍数调整音量，可选限幅器防削波",
+      "deps": [
+        "ffmpeg"
+      ],
+      "online": null
+    },
+    {
+      "id": "aud-normalize",
+      "name": "响度归一化",
+      "desc": "EBU R128 loudnorm 统一响度（播客/配音），支持精确两遍",
+      "deps": [
+        "ffmpeg"
+      ],
+      "online": null
+    },
+    {
+      "id": "aud-denoise",
+      "name": "轻量降噪",
+      "desc": "afftdn 谱降噪 + 可选高通/低通，降低底噪与低频嗡声",
+      "deps": [
+        "ffmpeg"
+      ],
+      "online": null
+    },
+    {
+      "id": "aud-fade",
+      "name": "淡入 / 淡出",
+      "desc": "片头淡入、片尾淡出，可设时长与曲线",
+      "deps": [
+        "ffmpeg",
+        "ffprobe"
+      ],
+      "online": null
+    },
+    {
+      "id": "aud-mix",
+      "name": "双轨混音",
+      "desc": "主音轨叠加背景音乐，可调各自音量、循环 BGM、限幅",
+      "deps": [
+        "ffmpeg"
+      ],
+      "online": null
+    },
+    {
+      "id": "aud-info",
+      "name": "音频信息探测",
+      "desc": "读取时长、编码、采样率、声道、码率、位深与标签，可导出 JSON",
+      "deps": [
+        "ffprobe"
+      ],
+      "online": null
+    },
+    {
+      "id": "aud-visualize",
+      "name": "波形图 / 频谱图",
+      "desc": "用 ffmpeg 滤镜直接渲染 PNG 波形图或频谱图，无需第三方库",
+      "deps": [
+        "ffmpeg"
+      ],
+      "online": null
+    },
+    {
+      "id": "aud-extract",
+      "name": "从视频提取音轨",
+      "desc": "把视频里的音轨抽成 mp3 / m4a / wav / flac，可转单声道与重采样",
+      "deps": [
+        "ffmpeg"
+      ],
+      "online": null
+    }
+  ]
+}

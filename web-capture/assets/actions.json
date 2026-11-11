@@ -1,0 +1,270 @@
+{
+  "format": "web-capture/actions-v1",
+  "skill": "web-capture",
+  "version": "1.4.1",
+  "display_name": "网页全搞定",
+  "online_root": null,
+  "online_note": "本技能不提供第三方在线替代方案，所有动作 online 均为 null；依赖缺失时只给本地安装指引，原始文件不上传任何云端或第三方服务器。",
+  "actions": [
+    {
+      "id": "web-fetch",
+      "label": "保存网页",
+      "group": "采集",
+      "triggers": [
+        "保存网页",
+        "网页存档",
+        "抓取网页",
+        "下载网页",
+        "web fetch",
+        "网页快照"
+      ],
+      "depends": [
+        "stdlib"
+      ],
+      "default_output": "{{stem}}-fetch",
+      "steps": [
+        [
+          "python",
+          "scripts/web_fetch.py",
+          "{{input}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "原样保存 page.html + meta.json（最终 URL / 状态码 / 编码 / sha256 / 链接与图片数）。--extra --assets 可把 CSS/JS/图片一起下载到 assets/ 并生成 page.local.html。",
+      "online": null
+    },
+    {
+      "id": "web-single",
+      "label": "单文件离线存档",
+      "group": "采集",
+      "triggers": [
+        "单文件网页",
+        "离线网页",
+        "网页打包",
+        "single file",
+        "mhtml",
+        "网页另存为"
+      ],
+      "depends": [
+        "stdlib"
+      ],
+      "default_output": "{{stem}}-single",
+      "steps": [
+        [
+          "python",
+          "scripts/web_single.py",
+          "{{input}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "把外链 CSS/JS/图片（含 CSS 内的 url()）内联为 data: URI，输出 page.single.html + resources.json；失败的资源会保留原链接并写入 warnings。",
+      "online": null
+    },
+    {
+      "id": "web-screenshot",
+      "label": "整页截图",
+      "group": "渲染",
+      "triggers": [
+        "网页截图",
+        "整页截图",
+        "长截图",
+        "网页转图片",
+        "web screenshot"
+      ],
+      "depends": [
+        "browser"
+      ],
+      "default_output": "{{stem}}-shot",
+      "steps": [
+        [
+          "python",
+          "scripts/web_screenshot.py",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "--width",
+          "{{width}}"
+        ]
+      ],
+      "notes": "Edge/Chrome headless：优先 CDP 精确整页 PNG，失败自动降级为命令行视口截图并在 capture.json 标 degraded=true。--extra --viewport / --height / --wait 可调。",
+      "online": null
+    },
+    {
+      "id": "web-to-pdf",
+      "label": "网页转 PDF",
+      "group": "渲染",
+      "triggers": [
+        "网页转 PDF",
+        "网页打印",
+        "URL 转 PDF",
+        "html to pdf",
+        "保存为 PDF"
+      ],
+      "depends": [
+        "browser"
+      ],
+      "default_output": "{{stem}}-pdf",
+      "steps": [
+        [
+          "python",
+          "scripts/web_to_pdf.py",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "--width",
+          "{{width}}"
+        ]
+      ],
+      "notes": "走浏览器打印引擎（保留 CSS 打印样式与背景），输出 page.pdf；CLI 降级时同样标注 degraded。PDF 后处理（合并/加水印/OCR）交给 pdf-workshop。",
+      "online": null
+    },
+    {
+      "id": "web-to-md",
+      "label": "正文转 Markdown",
+      "group": "转换",
+      "triggers": [
+        "网页转 Markdown",
+        "网页转 md",
+        "提取正文",
+        "网页正文",
+        "url to markdown",
+        "网页转文本"
+      ],
+      "depends": [
+        "stdlib"
+      ],
+      "default_output": "{{stem}}-md",
+      "steps": [
+        [
+          "python",
+          "scripts/web_to_md.py",
+          "{{input}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "可读性启发式去导航/广告，输出 page.md（标题、段落、列表、表格、代码块、链接绝对化）+ outline.json；--extra --all 转成整页、--no-frontmatter 去元信息。",
+      "online": null
+    },
+    {
+      "id": "web-extract",
+      "label": "结构化抽取",
+      "group": "转换",
+      "triggers": [
+        "抽取链接",
+        "网页链接",
+        "提取表格",
+        "网页元数据",
+        "og:image",
+        "JSON-LD",
+        "extract links"
+      ],
+      "depends": [
+        "stdlib"
+      ],
+      "default_output": "{{stem}}-extract",
+      "steps": [
+        [
+          "python",
+          "scripts/web_extract.py",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "--kind",
+          "{{kind}}"
+        ]
+      ],
+      "notes": "extract.json + links.csv / images.csv / tables/table-NNNN.csv（UTF-8-BOM）+ meta.json；--kind 可选 links,images,tables,meta。",
+      "online": null
+    },
+    {
+      "id": "web-batch",
+      "label": "批量采集",
+      "group": "批量",
+      "triggers": [
+        "批量抓网页",
+        "批量网页存档",
+        "URL 列表",
+        "批量转 Markdown",
+        "web batch"
+      ],
+      "depends": [
+        "stdlib"
+      ],
+      "default_output": "{{stem}}-batch",
+      "steps": [
+        [
+          "python",
+          "scripts/web_batch.py",
+          "{{input}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "输入 urls.txt/.json/.csv 或含 HTML 的目录，每个 URL 一个子目录，总目录写 index.csv + manifest.json；单条失败不中断。--extra --format all / --delay / --limit 可调。",
+      "online": null
+    },
+    {
+      "id": "web-crawl",
+      "label": "站内浅层爬取",
+      "group": "批量",
+      "triggers": [
+        "爬取网站",
+        "站内抓取",
+        "网站镜像",
+        "爬虫",
+        "sitemap",
+        "web crawl"
+      ],
+      "depends": [
+        "stdlib"
+      ],
+      "default_output": "{{stem}}-crawl",
+      "steps": [
+        [
+          "python",
+          "scripts/web_crawl.py",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "--depth",
+          "{{depth}}",
+          "--max-pages",
+          "{{max_pages}}"
+        ]
+      ],
+      "notes": "默认同域 BFS，遵守 robots.txt、限速、深度与页数上限；产物 pages/*.html/.md、urls.csv、graph.json。--extra --include/--exclude/--delay/--cross-origin 可调。",
+      "online": null
+    },
+    {
+      "id": "web-diff",
+      "label": "网页变更对比",
+      "group": "分析",
+      "triggers": [
+        "网页变更",
+        "网页对比",
+        "监控网页",
+        "页面 diff",
+        "web diff",
+        "内容更新检测"
+      ],
+      "depends": [
+        "stdlib"
+      ],
+      "default_output": "{{stem}}-diff",
+      "steps": [
+        [
+          "python",
+          "scripts/web_diff.py",
+          "{{input}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "对比两次快照的正文、标题、链接、图片、标题层级与 meta，输出 diff.md + diff.json。用 --extra --old X --new Y 传两侧；--strict 下检测到变化返回 2。",
+      "online": null
+    }
+  ]
+}

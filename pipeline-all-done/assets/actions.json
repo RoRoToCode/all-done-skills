@@ -1,0 +1,82 @@
+{
+  "format": "pipeline-all-done/actions-v1",
+  "skill": "pipeline-all-done",
+  "version": "1.4.1",
+  "display_name": "流水线全搞定",
+  "online_root": null,
+  "online_note": "本技能不提供第三方在线替代方案，所有动作 online 均为 null；依赖缺失时只给本地安装指引，原始文件不上传任何云端或第三方服务器。",
+  "actions": [
+    {
+      "id": "pipe-list",
+      "name": "技能与动作清单",
+      "group": "发现与路由",
+      "desc": "扫描技能根目录，列出全部已安装技能、版本与动作，支持表格或 JSON",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "pipe-route",
+      "name": "请求路由",
+      "group": "发现与路由",
+      "desc": "把一句自然语言请求按关键词打分，推荐最合适的技能与动作，只给建议不自动执行",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "pipe-template",
+      "name": "生成模板",
+      "group": "发现与路由",
+      "desc": "生成内置流水线定义模板：scan2md / web2ebook / office2pdf / tidy2pdf",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "pipe-validate",
+      "name": "定义校验",
+      "group": "定义与执行",
+      "desc": "校验流水线 JSON：技能/动作是否存在、变量引用是否合法、有无循环或超限",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "pipe-run",
+      "name": "执行流水线",
+      "group": "定义与执行",
+      "desc": "按定义逐步调用各技能统一入口，每步独立输出目录并写 manifest 与 state",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "pipe-resume",
+      "name": "断点续跑",
+      "group": "定义与执行",
+      "desc": "读取运行目录的 state.json，从第一个未完成步骤继续执行",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "pipe-status",
+      "name": "运行状态",
+      "group": "状态与报告",
+      "desc": "读取 manifest 与 state，输出每步状态、耗时与产物路径摘要",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "pipe-report",
+      "name": "生成报告",
+      "group": "状态与报告",
+      "desc": "把一次运行汇总为 Markdown / HTML / JSON 报告，含失败清单与产物索引",
+      "deps": [],
+      "optional": [],
+      "online": null
+    }
+  ]
+}

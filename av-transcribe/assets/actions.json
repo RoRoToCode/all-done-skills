@@ -1,0 +1,52 @@
+{
+  "format": "av-transcribe/actions-v1",
+  "skill": "av-transcribe",
+  "version": "1.4.1",
+  "display_name": "音视频转写",
+  "online_root": null,
+  "online_note": "本技能不提供第三方在线替代方案，所有动作 online 均为 null；依赖缺失时只给本地安装指引，原始文件不上传任何云端或第三方服务器。",
+  "actions": [
+    {
+      "id": "av-transcribe",
+      "name": "音视频转写（语音识别）",
+      "desc": "把音频/视频里的人声转写成带时间戳字幕（SRT/VTT/TXT/JSON/LRC），本地 Whisper 模型",
+      "deps": [
+        "ffmpeg",
+        "whisper"
+      ],
+      "online": null
+    },
+    {
+      "id": "av-burn-subs",
+      "name": "字幕烧录",
+      "desc": "把 SRT/VTT 硬字幕烧录进视频画面，可调字号/颜色/位置",
+      "deps": [
+        "ffmpeg"
+      ],
+      "online": null
+    },
+    {
+      "id": "av-sub-convert",
+      "name": "字幕格式互转",
+      "desc": "SRT ↔ VTT ↔ LRC ↔ TXT ↔ ASS 互转，纯本地无依赖",
+      "deps": [],
+      "online": null
+    },
+    {
+      "id": "av-sub-translate",
+      "name": "字幕翻译",
+      "desc": "把字幕翻译成目标语言并保留时间轴；默认对接本地 Ollama，也可指向任意 OpenAI 兼容接口",
+      "deps": [],
+      "online": null
+    },
+    {
+      "id": "av-extract-audio",
+      "name": "提取音轨",
+      "desc": "从视频抽音轨存为 wav/mp3/m4a/aac，为转写做准备",
+      "deps": [
+        "ffmpeg"
+      ],
+      "online": null
+    }
+  ]
+}

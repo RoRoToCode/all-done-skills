@@ -1,0 +1,120 @@
+{
+  "format": "data-all-done/actions-v1",
+  "skill": "data-all-done",
+  "version": "1.4.1",
+  "display_name": "数据全搞定",
+  "online_root": null,
+  "online_note": "本技能不提供第三方在线替代方案，所有动作 online 均为 null；依赖缺失时只给本地安装指引，原始文件不上传任何云端或第三方服务器。",
+  "actions": [
+    {
+      "id": "data-convert",
+      "name": "格式互转",
+      "group": "读写与校验",
+      "desc": "在 CSV/TSV/JSON/NDJSON/XML/YAML/TOML/Markdown 表格之间转换，格式可显式指定或按扩展名推断",
+      "deps": [],
+      "optional": [
+        "yaml"
+      ],
+      "online": null
+    },
+    {
+      "id": "data-validate",
+      "name": "格式校验",
+      "group": "读写与校验",
+      "desc": "校验一个或多个数据文件的语法、字段一致性、空值与疑似类型问题，输出体检报告",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "data-schema",
+      "name": "推断 Schema",
+      "group": "读写与校验",
+      "desc": "从记录列表推断字段类型与必填性，生成 JSON Schema draft-07 草案",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "data-merge",
+      "name": "多表合并",
+      "group": "变换",
+      "desc": "按行拼接多个数据文件，或按指定键做左连接",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "data-filter",
+      "name": "条件筛选",
+      "group": "变换",
+      "desc": "用受限的「字段 运算符 值」表达式筛选记录，支持多条件与 any/all 组合",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "data-select",
+      "name": "字段映射",
+      "group": "变换",
+      "desc": "选择、排除与重命名字段，输出精简后的记录表",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "data-sort",
+      "name": "记录排序",
+      "group": "变换",
+      "desc": "按字段升序/降序排序，可选数值比较",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "data-dedupe",
+      "name": "记录去重",
+      "group": "变换",
+      "desc": "按全部字段或指定字段去重，保留首条或末条",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "data-flatten",
+      "name": "嵌套扁平化",
+      "group": "变换",
+      "desc": "把嵌套 dict/list 展开成点路径字段，便于再转 CSV 或 Markdown 表格",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "data-stats",
+      "name": "字段画像",
+      "group": "分析与输出",
+      "desc": "统计每字段的记录数、空值率、唯一值、推断类型、极值或高频值 Top N",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "data-diff",
+      "name": "两表比对",
+      "group": "分析与输出",
+      "desc": "按行号或主键比对两个数据文件，输出新增、删除与变更字段",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "data-split",
+      "name": "拆分成多份",
+      "group": "分析与输出",
+      "desc": "按固定行数或某字段取值把大表拆成多份，并写 split-manifest.json",
+      "deps": [],
+      "optional": [],
+      "online": null
+    }
+  ]
+}

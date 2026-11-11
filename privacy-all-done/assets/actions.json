@@ -1,0 +1,104 @@
+{
+  "format": "privacy-all-done/actions-v1",
+  "skill": "privacy-all-done",
+  "version": "1.4.1",
+  "display_name": "隐私全搞定",
+  "online_root": null,
+  "online_note": "本技能不提供第三方在线替代方案，所有动作 online 均为 null；依赖缺失时只给本地安装指引，原始文件不上传任何云端或第三方服务器。",
+  "actions": [
+    {
+      "id": "pv-scan",
+      "name": "敏感信息扫描",
+      "group": "扫描与脱敏",
+      "desc": "扫描文本里的手机号/身份证/邮箱/银行卡/IP 等，按类型汇总并给出掩码后的命中位置",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "pv-redact",
+      "name": "文本脱敏",
+      "group": "扫描与脱敏",
+      "desc": "把命中内容按掩码、占位符或直接删除处理，另存新文件；不给 -o 只打印计划",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "pv-batch",
+      "name": "目录批量",
+      "group": "扫描与脱敏",
+      "desc": "批量扫描或脱敏目录下匹配的文件，单份失败不中断，输出汇总报告",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "pv-report",
+      "name": "扫描报告",
+      "group": "扫描与脱敏",
+      "desc": "把扫描结果汇总成 Markdown / HTML / JSON 报告，含按类型统计与文件分布",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "pv-rules",
+      "name": "规则集管理",
+      "group": "扫描与脱敏",
+      "desc": "列出内置规则与样例，或校验并加载自定义规则 JSON",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "pv-metadata",
+      "name": "元数据读取",
+      "group": "元数据与条码",
+      "desc": "读取 JPEG EXIF、PNG 文本块、OOXML core/app 属性与 PDF 常见文档信息键",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "pv-clean",
+      "name": "元数据清理",
+      "group": "元数据与条码",
+      "desc": "生成清掉 EXIF/文本块/文档属性的新副本，无法安全处理的格式标记 skipped",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "pv-barcode",
+      "name": "Code128 条形码",
+      "group": "元数据与条码",
+      "desc": "纯标准库生成 Code128-B 条形码 SVG，含校验位计算",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "pv-qr-make",
+      "name": "二维码生成",
+      "group": "元数据与条码",
+      "desc": "用可选依赖 qrcode 生成 PNG/SVG 二维码，缺依赖时给本地安装指引",
+      "deps": [],
+      "optional": [
+        "qrcode"
+      ],
+      "online": null
+    },
+    {
+      "id": "pv-qr-read",
+      "name": "二维码识别",
+      "group": "元数据与条码",
+      "desc": "用可选依赖 pyzbar 或 opencv-python 识别图片里的二维码，缺依赖时给本地安装指引",
+      "deps": [],
+      "optional": [
+        "cv2"
+      ],
+      "online": null
+    }
+  ]
+}

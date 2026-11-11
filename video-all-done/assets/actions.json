@@ -1,0 +1,140 @@
+{
+  "format": "video-all-done/actions-v1",
+  "skill": "video-all-done",
+  "version": "1.4.1",
+  "display_name": "视频全搞定",
+  "online_root": null,
+  "online_note": "本技能不提供第三方在线替代方案，所有动作 online 均为 null；依赖缺失时只给本地安装指引，原始文件不上传任何云端或第三方服务器。",
+  "actions": [
+    {
+      "id": "vid-convert",
+      "name": "格式转换",
+      "desc": "mp4 / webm / mov / mkv / avi 之间互转，可选编码器与质量",
+      "deps": [
+        "ffmpeg",
+        "ffprobe"
+      ],
+      "online": null
+    },
+    {
+      "id": "vid-compress",
+      "name": "压缩体积",
+      "desc": "按 CRF 或目标体积压缩，适合发消息或上传",
+      "deps": [
+        "ffmpeg",
+        "ffprobe"
+      ],
+      "online": null
+    },
+    {
+      "id": "vid-trim",
+      "name": "截取片段",
+      "desc": "按开始/结束时间或时长裁剪出一段（流拷贝或重编码）",
+      "deps": [
+        "ffmpeg",
+        "ffprobe"
+      ],
+      "online": null
+    },
+    {
+      "id": "vid-concat",
+      "name": "拼接合并",
+      "desc": "多段视频首尾相接合并为一个（流拷贝或重编码）",
+      "deps": [
+        "ffmpeg",
+        "ffprobe"
+      ],
+      "online": null
+    },
+    {
+      "id": "vid-resize",
+      "name": "改分辨率 / 比例",
+      "desc": "按宽度、高度或百分比缩放，可保持比例",
+      "deps": [
+        "ffmpeg",
+        "ffprobe"
+      ],
+      "online": null
+    },
+    {
+      "id": "vid-rotate",
+      "name": "旋转 / 翻转",
+      "desc": "按 90° 倍数旋转、任意角度，或水平/垂直翻转",
+      "deps": [
+        "ffmpeg",
+        "ffprobe"
+      ],
+      "online": null
+    },
+    {
+      "id": "vid-watermark",
+      "name": "加水印",
+      "desc": "文字或图片水印，可调位置、透明度、大小（文字用 Pillow 渲染保证中文）",
+      "deps": [
+        "PIL",
+        "ffmpeg",
+        "ffprobe"
+      ],
+      "online": null
+    },
+    {
+      "id": "vid-extract-audio",
+      "name": "提取音频",
+      "desc": "从视频抽出音轨，存为 mp3 / aac / m4a / wav",
+      "deps": [
+        "ffmpeg"
+      ],
+      "online": null
+    },
+    {
+      "id": "vid-extract-frames",
+      "name": "提取帧 / 截图",
+      "desc": "按时间点、间隔秒数或帧率抽取静帧为图片",
+      "deps": [
+        "ffmpeg"
+      ],
+      "online": null
+    },
+    {
+      "id": "vid-gif",
+      "name": "转 GIF / GIF 转视频",
+      "desc": "视频转高质量 GIF，或把 GIF 还原为视频",
+      "deps": [
+        "ffmpeg"
+      ],
+      "online": null
+    },
+    {
+      "id": "vid-subs",
+      "name": "字幕烧录",
+      "desc": "把 SRT 字幕烧录（硬字幕）进画面，可调字号/颜色/描边",
+      "deps": [
+        "ffmpeg",
+        "ffprobe"
+      ],
+      "online": null
+    },
+    {
+      "id": "vid-slideshow",
+      "name": "图片生成视频（幻灯片）",
+      "desc": "图片序列 + 可选背景音乐生成视频，支持淡入淡出转场与缓慢推近",
+      "deps": [
+        "PIL",
+        "ffmpeg",
+        "ffprobe"
+      ],
+      "online": null
+    },
+    {
+      "id": "vid-textcard",
+      "name": "文字卡片生成视频",
+      "desc": "把一组标题+正文卡片渲染为视频（真·文字生成视频），支持转场与配乐",
+      "deps": [
+        "PIL",
+        "ffmpeg",
+        "ffprobe"
+      ],
+      "online": null
+    }
+  ]
+}

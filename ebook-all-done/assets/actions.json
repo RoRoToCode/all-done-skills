@@ -1,0 +1,144 @@
+{
+  "format": "ebook-all-done/actions-v1",
+  "skill": "ebook-all-done",
+  "version": "1.4.1",
+  "display_name": "电子书全搞定",
+  "online_root": null,
+  "online_note": "本技能不提供第三方在线替代方案，所有动作 online 均为 null；依赖缺失时只给本地安装指引，原始文件不上传任何云端或第三方服务器。",
+  "actions": [
+    {
+      "id": "eb-inspect",
+      "name": "电子书体检",
+      "desc": "读出书名/作者/语言/出版社/ISBN、EPUB 版本、章节、字数、图片与封面、DRM 标记，输出 JSON 摘要",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "eb-validate",
+      "name": "EPUB 规范校验",
+      "desc": "检查 mimetype、container、OPF 必需字段、manifest 悬空文件、spine 引用、XHTML 闭合、目录与图片链接、加密标记",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "eb-batch",
+      "name": "批量处理",
+      "desc": "对一个目录里的全部 EPUB 批量执行 inspect / validate / extract，汇总为 manifest.json",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "eb-meta",
+      "name": "元数据读取与修改",
+      "desc": "查看或改写标题、作者、语言、出版社、ISBN、简介、系列等 OPF 元数据，另存新 EPUB",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "eb-cover",
+      "name": "封面提取 / 替换 / 生成",
+      "desc": "导出封面图、用图片替换封面，或用 Pillow 生成纯色文字封面",
+      "deps": [],
+      "optional": [
+        "PIL"
+      ],
+      "online": null
+    },
+    {
+      "id": "eb-images",
+      "name": "插图资源导出",
+      "desc": "列出并导出 EPUB 内全部图片 / 字体 / 样式资源，输出清单 JSON",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "eb-toc",
+      "name": "目录导出",
+      "desc": "从 NCX 或 EPUB3 nav.xhtml 抽出层级目录，输出 toc.md 与 toc.json",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "eb-retoc",
+      "name": "目录重建",
+      "desc": "按缩进目录文本重建 NCX 与 nav.xhtml（支持显式指定章节文件），另存新 EPUB",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "eb-extract",
+      "name": "正文提取",
+      "desc": "按章节导出 Markdown / TXT 分章文件与全文，可选同时导出图片并修正引用路径",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "eb-search",
+      "name": "全文检索",
+      "desc": "跨章节搜索关键词或正则，输出命中章节、上下文与位置（JSON / Markdown）",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "eb-split",
+      "name": "按章拆分",
+      "desc": "按目录顶层、章节数或指定数量拆成多本独立 EPUB，各自带目录与封面",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "eb-merge",
+      "name": "多本合并",
+      "desc": "把多本 EPUB 合成一本，书名作一级目录、原章节作二级，资源路径重映射避免冲突",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "eb-from-md",
+      "name": "Markdown 生成 EPUB",
+      "desc": "按 # 标题切章，生成 EPUB3（含 nav.xhtml + NCX 兼容），可指定作者、语言、封面",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "eb-from-text",
+      "name": "纯文本生成 EPUB",
+      "desc": "按「第X章」等正则切分 TXT 小说，生成带目录的 EPUB",
+      "deps": [],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "eb-to-pdf",
+      "name": "EPUB 转 PDF",
+      "desc": "把全书正文拼成连续 HTML，用本机 Edge / Chrome 无头打印为 PDF（中文字体走系统字体）",
+      "deps": [
+        "browser"
+      ],
+      "optional": [],
+      "online": null
+    },
+    {
+      "id": "eb-convert",
+      "name": "格式互转（Calibre）",
+      "desc": "经 Calibre ebook-convert 在 EPUB / MOBI / AZW3 / PDF / DOCX / TXT 等格式之间互转",
+      "deps": [
+        "ebook-convert"
+      ],
+      "optional": [],
+      "online": null
+    }
+  ]
+}

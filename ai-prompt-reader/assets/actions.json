@@ -1,0 +1,45 @@
+{
+  "format": "ai-prompt-reader/actions-v1",
+  "skill": "ai-prompt-reader",
+  "version": "1.4.1",
+  "display_name": "AI 提示词取回",
+  "online_root": "https://roroto.com",
+  "online_note": "仅当 roroto.com 确有对应工具页时，actions.py online <id> 才给出第三方在线替代链接；该站没有对应工具的动作 online 为 null，依赖缺失时只给本地安装指引。第三方站点的运行方式与隐私政策以它自身声明为准，本技能不作担保。",
+  "actions": [
+    {
+      "id": "prompt-read",
+      "name": "读取提示词",
+      "desc": "读一张 AI 图里的正向/反向提示词与参数（步骤、种子、采样器、模型）",
+      "deps": [],
+      "online": "https://roroto.com/zh/tools/ai-image-prompt/"
+    },
+    {
+      "id": "prompt-copy",
+      "name": "导出可复制文本",
+      "desc": "只输出提示词正文，直接粘到别的生成工具里；可按 A1111 写法把正负拼回一段",
+      "deps": [],
+      "online": "https://roroto.com/zh/tools/ai-image-prompt/"
+    },
+    {
+      "id": "prompt-json",
+      "name": "导出 JSON",
+      "desc": "结构化输出全部字段，可附原始元数据块，便于脚本或表格二次处理",
+      "deps": [],
+      "online": null
+    },
+    {
+      "id": "prompt-batch",
+      "name": "批量扫描目录",
+      "desc": "扫整个目录，逐张列出工具/种子/模型并汇总 CSV，同时标出读不出的图",
+      "deps": [],
+      "online": null
+    },
+    {
+      "id": "prompt-raw",
+      "name": "查看原始元数据",
+      "desc": "列出文件里所有文字块原文，用于核对或处理未知格式",
+      "deps": [],
+      "online": null
+    }
+  ]
+}

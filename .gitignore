@@ -1,0 +1,30 @@
+# 本地隔离区：测试产物、历史归档、含本机环境信息的文件（不公开发布）
+/_local-only/
+
+# 个人 / 编辑器元数据（不删，仅排除出版本控制）
+/.workbuddy/
+/.codebuddy/
+/.uninstall-backup-*/
+
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+
+# 根目录交付包：作为 GitHub Release 附件发布，不进版本库
+/*.zip
+
+# 独立子项目：已有自己的仓库（RoRoToCode/vramfit）
+/vramfit/
+
+# 上架 / 发布副本（含重复包与操作单）
+/_publish/
+
+# 根目录开发 / 发布脚本：含本机绝对路径，不属于技能交付内容
+# 注意只匹配仓库根的 .py，不影响各技能 scripts/ 下的脚本
+/*.py
+
+# 运行时残留（已隔离，双保险）
+**/.pdf-workshop/
+**/ext-images/
+**/ext-tables/

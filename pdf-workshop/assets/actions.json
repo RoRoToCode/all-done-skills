@@ -1,0 +1,669 @@
+{
+  "format": "pdf-workshop/actions-v1",
+  "skill": "pdf-workshop",
+  "version": "1.4.1",
+  "display_name": "PDF 全搞定",
+  "online_root": "https://roroto.com",
+  "online_note": "仅当 roroto.com 确有对应工具页时，actions.py online <id> 才给出第三方在线替代链接；该站没有对应工具的动作 online 为 null，依赖缺失时只给本地安装指引。第三方站点的运行方式与隐私政策以它自身声明为准，本技能不作担保。",
+  "actions": [
+    {
+      "id": "pdf-to-word",
+      "label": "PDF 转 Word",
+      "group": "格式转换",
+      "triggers": [
+        "PDF转Word",
+        "pdf-word",
+        "转 Word",
+        "转 docx"
+      ],
+      "depends": [
+        "cli"
+      ],
+      "default_output": "{{stem}}.docx",
+      "steps": [
+        [
+          "python",
+          "scripts/wb_pdf.py",
+          "convert",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "-f",
+          "docx"
+        ]
+      ],
+      "notes": "复用宿主官方 CLI 的 convert，不下载替代二进制；复杂版式需人工校对。",
+      "online": "https://roroto.com"
+    },
+    {
+      "id": "pdf-to-excel",
+      "label": "PDF 转 Excel",
+      "group": "格式转换",
+      "triggers": [
+        "PDF转Excel",
+        "表格转 Excel",
+        "转 xlsx"
+      ],
+      "depends": [
+        "cli"
+      ],
+      "default_output": "{{stem}}.xlsx",
+      "steps": [
+        [
+          "python",
+          "scripts/wb_pdf.py",
+          "convert",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "-f",
+          "xlsx",
+          "--sheet-split",
+          "auto"
+        ]
+      ],
+      "notes": "跨页表格与合并单元格为近似还原，金额类数字须回看原页核对。",
+      "online": "https://roroto.com"
+    },
+    {
+      "id": "pdf-to-ppt",
+      "label": "PDF 转 PPT",
+      "group": "格式转换",
+      "triggers": [
+        "PDF转PPT",
+        "转 pptx"
+      ],
+      "depends": [
+        "cli"
+      ],
+      "default_output": "{{stem}}.pptx",
+      "steps": [
+        [
+          "python",
+          "scripts/wb_pdf.py",
+          "convert",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "-f",
+          "pptx"
+        ]
+      ],
+      "notes": "转换结果以页为单位，通常仍需人工重排。",
+      "online": "https://roroto.com"
+    },
+    {
+      "id": "pdf-to-images",
+      "label": "PDF 转图片",
+      "group": "格式转换",
+      "triggers": [
+        "PDF 转图片",
+        "PDF 转 PNG",
+        "逐页导出图片",
+        "pdf to png"
+      ],
+      "depends": [
+        "cli"
+      ],
+      "default_output": "{{stem}}-images",
+      "steps": [
+        [
+          "python",
+          "scripts/wb_pdf.py",
+          "render",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "-f",
+          "png",
+          "--dpi",
+          "150"
+        ]
+      ],
+      "notes": "-o 必须是目录。改 JPG 用 -f jpg --jpeg-quality 90，调清晰度用 --dpi 200；每份文档用独立目录避免旧图混入。",
+      "online": "https://roroto.com/tools/pdf-to-image/"
+    },
+    {
+      "id": "pdf-extract",
+      "label": "提取文字 / 表格",
+      "group": "内容识别",
+      "triggers": [
+        "提取文字",
+        "导出 Markdown",
+        "提取表格",
+        "提取内嵌图片"
+      ],
+      "depends": [
+        "cli"
+      ],
+      "default_output": "{{stem}}-extract",
+      "steps": [
+        [
+          "python",
+          "scripts/wb_pdf.py",
+          "read",
+          "{{input}}",
+          "-o",
+          "{{output}}.md",
+          "-f",
+          "md-plain",
+          "--image-dir",
+          "{{output}}-images"
+        ],
+        [
+          "python",
+          "scripts/wb_pdf.py",
+          "read",
+          "{{input}}",
+          "-o",
+          "{{output}}-tables",
+          "-f",
+          "table",
+          "--table-format",
+          "csv"
+        ]
+      ],
+      "notes": "md-plain 保留归组后的正文与表格；--image-dir 只提取文档内嵌图片，不是整页渲染（后者用 pdf-to-images）。多份文档的检索 / 对比请用「跨文档检索」。",
+      "online": "https://roroto.com/tools/pdf-to-text/"
+    },
+    {
+      "id": "pdf-ocr",
+      "label": "PDF 文字识别",
+      "group": "内容识别",
+      "triggers": [
+        "PDF文字识别",
+        "pdf-ocr",
+        "OCR",
+        "扫描件识别",
+        "图片转文字"
+      ],
+      "depends": [
+        "cli",
+        "rapidocr"
+      ],
+      "default_output": "{{stem}}-ocr",
+      "steps": [
+        [
+          "python",
+          "scripts/ocr_pdf.py",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "--lang",
+          "chi_sim+eng",
+          "--dpi",
+          "200",
+          "--tables"
+        ]
+      ],
+      "notes": "输出为文本与 CSV，不是带隐形文字层的 PDF；引擎优先级为 CLI（Tesseract / PaddleOCR）> RapidOCR（无需外部二进制），降级情况写在 manifest 的 warnings 里，须在结论中说明。",
+      "online": "https://roroto.com/tools/pdf-ocr/"
+    },
+    {
+      "id": "pdf-search",
+      "label": "跨文档检索",
+      "group": "内容识别",
+      "triggers": [
+        "跨文档检索",
+        "多份 PDF 搜索",
+        "对比 PDF",
+        "抽取字段"
+      ],
+      "depends": [
+        "cli"
+      ],
+      "default_output": "index.json",
+      "steps": [
+        [
+          "python",
+          "scripts/cross_doc.py",
+          "index",
+          "{{inputs}}",
+          "-o",
+          "{{output}}"
+        ],
+        [
+          "python",
+          "scripts/cross_doc.py",
+          "search",
+          "{{query}}",
+          "-i",
+          "{{output}}",
+          "--context",
+          "80"
+        ]
+      ],
+      "notes": "index 可接目录；结果带 1 起算页号。正则命中只是候选，单位与上下文要回看原页确认。",
+      "online": "https://roroto.com/tools/pdf-to-text/"
+    },
+    {
+      "id": "pdf-merge",
+      "label": "合并 PDF",
+      "group": "页面处理",
+      "triggers": [
+        "合并 PDF",
+        "拼接 PDF",
+        "merge pdf"
+      ],
+      "depends": [
+        "cli"
+      ],
+      "default_output": "merged.pdf",
+      "steps": [
+        [
+          "python",
+          "scripts/pdf_ops.py",
+          "merge",
+          "{{inputs}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "按参数顺序拼接；输出不要与任一输入同名。",
+      "online": "https://roroto.com/tools/pdf-merge/"
+    },
+    {
+      "id": "pdf-split",
+      "label": "拆分 PDF",
+      "group": "页面处理",
+      "triggers": [
+        "拆分 PDF",
+        "按页拆分",
+        "split pdf"
+      ],
+      "depends": [
+        "cli"
+      ],
+      "default_output": "{{stem}}-pages",
+      "steps": [
+        [
+          "python",
+          "scripts/pdf_ops.py",
+          "split",
+          "{{input}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "输出必须是目录；每份文档使用独立目录，避免旧产物混入。",
+      "online": "https://roroto.com/tools/pdf-split/"
+    },
+    {
+      "id": "pdf-extract-pages",
+      "label": "按页提取",
+      "group": "页面处理",
+      "triggers": [
+        "按页提取",
+        "提取指定页",
+        "截取页面",
+        "另存某几页",
+        "保留第几页"
+      ],
+      "depends": [
+        "pypdf"
+      ],
+      "default_output": "{{stem}}-excerpt.pdf",
+      "steps": [
+        [
+          "python",
+          "scripts/extract_pages.py",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "--pages",
+          "{{pages}}"
+        ]
+      ],
+      "notes": "页码 1 起算，支持 3-5、1,3-5 这样的范围；越界会报错并列出总页数。逐页校验页数、文字与页面尺寸，任一不一致就丢弃输出。加密 PDF 请先用「解密 PDF」。",
+      "online": "https://roroto.com/tools/pdf-extract-pages/"
+    },
+    {
+      "id": "pdf-watermark",
+      "label": "加水印 / 页码",
+      "group": "页面处理",
+      "triggers": [
+        "加水印",
+        "加页码",
+        "水印",
+        "页码"
+      ],
+      "depends": [
+        "pypdf",
+        "browser"
+      ],
+      "default_output": "{{stem}}-marked.pdf",
+      "steps": [
+        [
+          "python",
+          "scripts/pdf_ops.py",
+          "watermark",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "--text",
+          "{{text}}"
+        ]
+      ],
+      "notes": "水印走浏览器叠层支持中文；页码用 page-numbers（ASCII 字体）。两者可依次叠加。",
+      "online": "https://roroto.com/tools/pdf-watermark/"
+    },
+    {
+      "id": "pdf-encrypt",
+      "label": "加密 PDF",
+      "group": "页面处理",
+      "triggers": [
+        "PDF 加密",
+        "设置密码",
+        "加打开密码",
+        "lock pdf"
+      ],
+      "depends": [
+        "pypdf"
+      ],
+      "default_output": "{{stem}}-locked.pdf",
+      "steps": [
+        [
+          "python",
+          "scripts/pdf_ops.py",
+          "encrypt",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "--new-password",
+          "{{password}}"
+        ]
+      ],
+      "notes": "Windows 版官方 CLI 无法写加密 PDF，一律走 pypdf；密码只经参数传入，不写日志、manifest 或回答。移除密码请用「解密 PDF」。",
+      "online": "https://roroto.com/tools/pdf-protect/"
+    },
+    {
+      "id": "pdf-decrypt",
+      "label": "解密 PDF",
+      "group": "页面处理",
+      "triggers": [
+        "PDF 解密",
+        "去掉密码",
+        "移除密码",
+        "unlock pdf"
+      ],
+      "depends": [
+        "pypdf"
+      ],
+      "default_output": "{{stem}}-unlocked.pdf",
+      "steps": [
+        [
+          "python",
+          "scripts/pdf_ops.py",
+          "decrypt",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "-p",
+          "{{password}}"
+        ]
+      ],
+      "notes": "必须提供 --password；密码只经参数传入，不写日志或回答。Windows 版官方 CLI 不能写加密文档，走 pypdf。",
+      "online": "https://roroto.com/tools/pdf-unlock/"
+    },
+    {
+      "id": "pdf-from-md",
+      "label": "生成 PDF",
+      "group": "生成导出",
+      "triggers": [
+        "生成 PDF",
+        "Markdown 转 PDF",
+        "导出 PDF"
+      ],
+      "depends": [
+        "browser"
+      ],
+      "default_output": "{{stem}}.pdf",
+      "steps": [
+        [
+          "python",
+          "scripts/md_to_pdf.py",
+          "{{input}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "支持 GFM 表格、代码块、<!-- pagebreak --> 手动分页；生成后核对页数与文件大小。",
+      "online": "https://roroto.com"
+    },
+    {
+      "id": "pdf-compress",
+      "label": "PDF 压缩",
+      "group": "页面处理",
+      "triggers": [
+        "压缩PDF",
+        "PDF变小",
+        "减小体积"
+      ],
+      "depends": [
+        "pymupdf"
+      ],
+      "default_output": "{{stem}}-compressed.pdf",
+      "steps": [
+        [
+          "python",
+          "scripts/pdf_compress.py",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "{{extra}}"
+        ]
+      ],
+      "notes": "结构与流无损、内嵌图片有损重编码，扫描件收益最大；--level light|balanced|strong。",
+      "online": "https://roroto.com"
+    },
+    {
+      "id": "pdf-rotate",
+      "label": "PDF 旋转页面",
+      "group": "页面处理",
+      "triggers": [
+        "旋转PDF",
+        "转正页面"
+      ],
+      "depends": [
+        "pypdf"
+      ],
+      "default_output": "{{stem}}-rotated.pdf",
+      "steps": [
+        [
+          "python",
+          "scripts/pdf_ops.py",
+          "rotate",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "--angle",
+          "{{angle}}",
+          "{{extra}}"
+        ]
+      ],
+      "notes": "--angle 90/180/270（默认 90），--extra 里加 --pages 1,3-5 只转指定页。",
+      "online": "https://roroto.com"
+    },
+    {
+      "id": "pdf-delete-pages",
+      "label": "PDF 删除页面",
+      "group": "页面处理",
+      "triggers": [
+        "删除PDF页面",
+        "去掉某页"
+      ],
+      "depends": [
+        "pypdf"
+      ],
+      "default_output": "{{stem}}-trimmed.pdf",
+      "steps": [
+        [
+          "python",
+          "scripts/pdf_ops.py",
+          "delete",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "--pages",
+          "{{pages}}"
+        ]
+      ],
+      "notes": "--pages 必须显式给出（1-based，如 2,5-7），避免误删整篇。",
+      "online": "https://roroto.com"
+    },
+    {
+      "id": "pdf-crop",
+      "label": "PDF 裁边",
+      "group": "页面处理",
+      "triggers": [
+        "裁边PDF",
+        "去白边"
+      ],
+      "depends": [
+        "pypdf"
+      ],
+      "default_output": "{{stem}}-cropped.pdf",
+      "steps": [
+        [
+          "python",
+          "scripts/pdf_ops.py",
+          "crop",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "{{extra}}"
+        ]
+      ],
+      "notes": "--extra 里给 --box 左,下,右,上（单位 pt，如 36,36,36,36）。",
+      "online": "https://roroto.com"
+    },
+    {
+      "id": "pdf-page-number",
+      "label": "PDF 加页码",
+      "group": "页面处理",
+      "triggers": [
+        "加页码",
+        "页脚编号"
+      ],
+      "depends": [
+        "pypdf"
+      ],
+      "default_output": "{{stem}}-numbered.pdf",
+      "steps": [
+        [
+          "python",
+          "scripts/pdf_ops.py",
+          "page-numbers",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "{{extra}}"
+        ]
+      ],
+      "notes": "--extra 可给 --start 5 --position bl|bc|br --format \"第 {n} 页\" --font-size 9；页码用 Helvetica，中文标签会退化为占位。",
+      "online": "https://roroto.com"
+    },
+    {
+      "id": "pdf-info",
+      "label": "PDF 查看信息",
+      "group": "内容识别",
+      "triggers": [
+        "PDF页数",
+        "PDF信息"
+      ],
+      "depends": [
+        "pypdf"
+      ],
+      "default_output": "{{stem}}-info.json",
+      "steps": [
+        [
+          "python",
+          "scripts/pdf_ops.py",
+          "info",
+          "{{input}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "页数、每页尺寸、元数据、是否加密，落 JSON。",
+      "online": "https://roroto.com"
+    },
+    {
+      "id": "pdf-form-list",
+      "label": "PDF 表单字段",
+      "group": "表单与脱敏",
+      "triggers": [
+        "表单字段",
+        "AcroForm"
+      ],
+      "depends": [
+        "pypdf"
+      ],
+      "default_output": "{{stem}}-fields.json",
+      "steps": [
+        [
+          "python",
+          "scripts/pdf_forms.py",
+          "list",
+          "{{input}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "列出字段名/类型/当前值/可选项；扫描件没有字段属正常。",
+      "online": "https://roroto.com"
+    },
+    {
+      "id": "pdf-form-fill",
+      "label": "PDF 表单填写",
+      "group": "表单与脱敏",
+      "triggers": [
+        "填写PDF表单",
+        "填表"
+      ],
+      "depends": [
+        "pypdf"
+      ],
+      "default_output": "{{stem}}-filled.pdf",
+      "steps": [
+        [
+          "python",
+          "scripts/pdf_forms.py",
+          "fill",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "{{extra}}"
+        ]
+      ],
+      "notes": "--extra 里给 --fields 字段.json 或 --data \"姓名=张三;日期=2026-11-09\"；复选框传 true/false。不扁平化，仍可编辑。",
+      "online": "https://roroto.com"
+    },
+    {
+      "id": "pdf-redact",
+      "label": "PDF 涂抹脱敏",
+      "group": "表单与脱敏",
+      "triggers": [
+        "脱敏",
+        "redact",
+        "真删除文字"
+      ],
+      "depends": [
+        "pymupdf"
+      ],
+      "default_output": "{{stem}}-redacted.pdf",
+      "steps": [
+        [
+          "python",
+          "scripts/pdf_redact.py",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "{{extra}}"
+        ]
+      ],
+      "notes": "真删除而非画白块；--extra 给 --text 关键词 / --pattern 正则 / --pages 范围 / --fill white。扫描件无文字层会告警且不命中。",
+      "online": "https://roroto.com"
+    }
+  ]
+}

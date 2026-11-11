@@ -1,0 +1,291 @@
+{
+  "format": "office-all-done/actions-v1",
+  "skill": "office-all-done",
+  "version": "1.4.1",
+  "display_name": "Office 三件套全搞定",
+  "online_root": null,
+  "online_note": "本技能不提供第三方在线替代方案，所有动作 online 均为 null；依赖缺失时只给本地安装指引，原始文件不上传任何云端或第三方服务器。",
+  "actions": [
+    {
+      "id": "docx-extract",
+      "label": "Word 抽取文字",
+      "group": "Word",
+      "triggers": [
+        "Word 抽取文字",
+        "提取 docx 文字",
+        "docx 转 txt",
+        "导出 Word 正文"
+      ],
+      "depends": [
+        "docx"
+      ],
+      "default_output": "{{stem}}-text.txt",
+      "steps": [
+        [
+          "python",
+          "scripts/doc_extract.py",
+          "{{input}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "逐段保留标题层级与列表，输出纯文本；超链接取链接文字；含表格时以制表符分隔的行呈现。图片不进入文本，复杂版式以原文件为准。",
+      "online": null
+    },
+    {
+      "id": "docx-to-md",
+      "label": "Word 转 Markdown",
+      "group": "Word",
+      "triggers": [
+        "Word 转 Markdown",
+        "docx 转 md",
+        "导出 Markdown"
+      ],
+      "depends": [
+        "docx"
+      ],
+      "default_output": "{{stem}}.md",
+      "steps": [
+        [
+          "python",
+          "scripts/doc_to_md.py",
+          "{{input}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "标题映射为 # 层级，列表按级别缩进，加粗/斜体、超链接、GFM 表格尽量还原，块间留空行。图片输出 ![](name) 占位；需要图片文件时直接调脚本加 --images DIR。",
+      "online": null
+    },
+    {
+      "id": "docx-merge",
+      "label": "合并 Word",
+      "group": "Word",
+      "triggers": [
+        "合并 Word",
+        "拼接 docx",
+        "merge docx"
+      ],
+      "depends": [
+        "docx"
+      ],
+      "default_output": "merged.docx",
+      "steps": [
+        [
+          "python",
+          "scripts/doc_merge.py",
+          "{{inputs}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "按参数顺序拼接正文；首个文件决定页面设置与页眉页脚，样式、列表编号、图片、超链接随之迁移。加 --page-break 让每篇从新页开始。页码与目录需在 Word 中更新域。",
+      "online": null
+    },
+    {
+      "id": "docx-fill",
+      "label": "Word 模板填充",
+      "group": "Word",
+      "triggers": [
+        "Word 模板填充",
+        "占位符填充",
+        "批量生成合同",
+        "fill template"
+      ],
+      "depends": [
+        "docx"
+      ],
+      "default_output": "{{stem}}-filled.docx",
+      "steps": [
+        [
+          "python",
+          "scripts/doc_fill.py",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "--data",
+          "{{data}}"
+        ]
+      ],
+      "notes": "替换 {{key}} 占位符，覆盖正文、表格、页眉页脚；--data 可传 JSON 文件、内联 JSON，或 key=value（多组用 ; 分隔，Windows 下最稳）。模板不被覆盖，残留占位符会在结果里列出。",
+      "online": null
+    },
+    {
+      "id": "xlsx-extract",
+      "label": "Excel 导出数据",
+      "group": "Excel",
+      "triggers": [
+        "Excel 导出数据",
+        "xlsx 转 csv",
+        "提取表格数据",
+        "导出 JSON"
+      ],
+      "depends": [
+        "xlsx"
+      ],
+      "default_output": "{{stem}}-export",
+      "steps": [
+        [
+          "python",
+          "scripts/xls_extract.py",
+          "{{input}}",
+          "-o",
+          "{{output}}",
+          "--format",
+          "{{fmt}}"
+        ]
+      ],
+      "notes": "按工作表分别导出；-o 为目录，每表一个文件（csv/json/md）。空表跳过并写入警告。",
+      "online": null
+    },
+    {
+      "id": "xlsx-merge",
+      "label": "合并 Excel",
+      "group": "Excel",
+      "triggers": [
+        "合并 Excel",
+        "拼接 xlsx",
+        "合并工作表",
+        "merge xlsx"
+      ],
+      "depends": [
+        "xlsx"
+      ],
+      "default_output": "merged.xlsx",
+      "steps": [
+        [
+          "python",
+          "scripts/xls_merge.py",
+          "{{inputs}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "把所有输入工作簿的各工作表并入一个新工作簿，同名表自动加后缀；保留列宽、行高、合并单元格与冻结窗格。公式仅保留计算结果。",
+      "online": null
+    },
+    {
+      "id": "pptx-extract",
+      "label": "PPT 抽取文字",
+      "group": "PowerPoint",
+      "triggers": [
+        "PPT 抽取文字",
+        "提取 pptx 文字",
+        "导出幻灯片文字"
+      ],
+      "depends": [
+        "pptx"
+      ],
+      "default_output": "{{stem}}-slides.txt",
+      "steps": [
+        [
+          "python",
+          "scripts/ppt_extract.py",
+          "{{input}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "按幻灯片分节，保留标题与正文要点；含备注时附在每节末尾。",
+      "online": null
+    },
+    {
+      "id": "pptx-merge",
+      "label": "合并 PPT",
+      "group": "PowerPoint",
+      "triggers": [
+        "合并 PPT",
+        "拼接 pptx",
+        "merge pptx"
+      ],
+      "depends": [
+        "pptx"
+      ],
+      "default_output": "merged.pptx",
+      "steps": [
+        [
+          "python",
+          "scripts/ppt_merge.py",
+          "{{inputs}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "按参数顺序拼接幻灯片；母版与配色以首个文件为准，图片随幻灯片迁移。音视频与 OLE 部件不复制，动画与切换不保留。",
+      "online": null
+    },
+    {
+      "id": "docx-to-pdf",
+      "label": "Word 转 PDF",
+      "group": "转 PDF",
+      "triggers": [
+        "Word 转 PDF",
+        "docx 转 pdf",
+        "导出 PDF"
+      ],
+      "depends": [
+        "soffice"
+      ],
+      "default_output": "{{stem}}.pdf",
+      "steps": [
+        [
+          "python",
+          "scripts/doc_to_pdf.py",
+          "{{input}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "经 LibreOffice 无头转换；缺 soffice 时给出在线链接。中文需系统有 CJK 字体。",
+      "online": null
+    },
+    {
+      "id": "xlsx-to-pdf",
+      "label": "Excel 转 PDF",
+      "group": "转 PDF",
+      "triggers": [
+        "Excel 转 PDF",
+        "xlsx 转 pdf"
+      ],
+      "depends": [
+        "soffice"
+      ],
+      "default_output": "{{stem}}.pdf",
+      "steps": [
+        [
+          "python",
+          "scripts/xls_to_pdf.py",
+          "{{input}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "经 LibreOffice 无头转换；每个工作表通常输出一页。缺 soffice 时给出在线链接。",
+      "online": null
+    },
+    {
+      "id": "pptx-to-pdf",
+      "label": "PPT 转 PDF",
+      "group": "转 PDF",
+      "triggers": [
+        "PPT 转 PDF",
+        "pptx 转 pdf"
+      ],
+      "depends": [
+        "soffice"
+      ],
+      "default_output": "{{stem}}.pdf",
+      "steps": [
+        [
+          "python",
+          "scripts/ppt_to_pdf.py",
+          "{{input}}",
+          "-o",
+          "{{output}}"
+        ]
+      ],
+      "notes": "经 LibreOffice 无头转换，每页幻灯片对应一页 PDF。缺 soffice 时给出在线链接。",
+      "online": null
+    }
+  ]
+}

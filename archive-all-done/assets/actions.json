@@ -1,0 +1,193 @@
+{
+  "format": "archive-all-done/actions-v1",
+  "skill": "archive-all-done",
+  "version": "1.4.1",
+  "display_name": "压缩包全搞定",
+  "online_root": null,
+  "online_note": "本技能不提供第三方在线替代方案，所有动作 online 均为 null；依赖缺失时只给本地安装指引，原始文件不上传任何云端或第三方服务器。",
+  "actions": [
+    {
+      "id": "arc-create",
+      "name": "创建压缩包",
+      "group": "打包",
+      "desc": "把文件/目录打成 zip、tar、tar.gz、tar.bz2、tar.xz，可调压缩级别、注释与排除规则",
+      "deps": [
+        "stdlib"
+      ],
+      "optional": [],
+      "notes": "归档内路径按输入顶层名展开；可用 --base 指定相对根。",
+      "online": null
+    },
+    {
+      "id": "arc-extract",
+      "name": "解压",
+      "group": "解包",
+      "desc": "自动识别格式解压到目录，带路径穿越防护、成员过滤、层级剥离与重名自动放行",
+      "deps": [
+        "stdlib"
+      ],
+      "optional": [
+        "py7zr",
+        "rarfile"
+      ],
+      "notes": "7z / rar 读取为可选增强；默认拒绝绝对路径、..、盘符与链接条目。",
+      "online": null
+    },
+    {
+      "id": "arc-list",
+      "name": "查看清单",
+      "group": "查看",
+      "desc": "不解压列出包内条目、原始/压缩体积、修改时间、目录与加密标记，可输出 JSON",
+      "deps": [
+        "stdlib"
+      ],
+      "optional": [
+        "py7zr",
+        "rarfile"
+      ],
+      "notes": "加密包只列条目需要 --password，否则按设计拒绝。",
+      "online": null
+    },
+    {
+      "id": "arc-test",
+      "name": "完整性校验",
+      "group": "查看",
+      "desc": "逐条 CRC / 解压校验，报告损坏条目与包体是否可读",
+      "deps": [
+        "stdlib"
+      ],
+      "optional": [
+        "py7zr",
+        "rarfile"
+      ],
+      "notes": "zip 用 testzip，tar/gz/bz2/xz 逐成员读到底。",
+      "online": null
+    },
+    {
+      "id": "arc-add",
+      "name": "追加条目",
+      "group": "编辑",
+      "desc": "向已有压缩包追加文件或目录，产出新包，原包只读",
+      "deps": [
+        "stdlib"
+      ],
+      "optional": [],
+      "notes": "同名条目自动加 (2) 后缀，不静默覆盖。",
+      "online": null
+    },
+    {
+      "id": "arc-remove",
+      "name": "删除条目",
+      "group": "编辑",
+      "desc": "按 glob 从包内剔除指定条目，产出新包（不改动原包）",
+      "deps": [
+        "stdlib"
+      ],
+      "optional": [],
+      "notes": "--members 可多次传入，如 '*.txt' 'temp/*'。",
+      "online": null
+    },
+    {
+      "id": "arc-convert",
+      "name": "格式互转",
+      "group": "编辑",
+      "desc": "zip ↔ tar / tar.gz / tar.bz2 / tar.xz / gz / bz2 / xz，保持包内目录结构",
+      "deps": [
+        "stdlib"
+      ],
+      "optional": [
+        "py7zr",
+        "pyzipper"
+      ],
+      "notes": "经临时目录解包再重压，不改动原包；单文件格式只接受单个文件。",
+      "online": null
+    },
+    {
+      "id": "arc-encrypt",
+      "name": "加密压缩",
+      "group": "加密",
+      "desc": "带密码打包成加密 zip；装了 pyzipper 自动升级 AES-256，否则用标准库 ZipCrypto",
+      "deps": [
+        "stdlib"
+      ],
+      "optional": [
+        "pyzipper",
+        "py7zr"
+      ],
+      "notes": "ZipCrypto 是传统弱加密，仅防误看；需要强加密请 pip install pyzipper。",
+      "online": null
+    },
+    {
+      "id": "arc-decrypt",
+      "name": "带密码解压",
+      "group": "加密",
+      "desc": "用密码解出加密包内容，可选同时重打包成无密码新包",
+      "deps": [
+        "stdlib"
+      ],
+      "optional": [
+        "pyzipper",
+        "py7zr"
+      ],
+      "notes": "密码只在进程内使用，不写入日志、不回显。",
+      "online": null
+    },
+    {
+      "id": "arc-split",
+      "name": "分卷压缩",
+      "group": "批量",
+      "desc": "按目标体积把一批文件分组打成多个独立可解压的分卷，并写清单 JSON",
+      "deps": [
+        "stdlib"
+      ],
+      "optional": [],
+      "notes": "每个分卷都是完整可解压的压缩包，不依赖其他卷；单个超大文件单独成卷。",
+      "online": null
+    },
+    {
+      "id": "arc-merge",
+      "name": "合并压缩包",
+      "group": "批量",
+      "desc": "把多个压缩包（含分卷清单）的内容合并进一个新包，重名自动改名",
+      "deps": [
+        "stdlib"
+      ],
+      "optional": [
+        "py7zr",
+        "rarfile"
+      ],
+      "notes": "传入 arc-split 生成的 .manifest.json 可自动展开全部分卷。",
+      "online": null
+    },
+    {
+      "id": "arc-batch",
+      "name": "批量压缩 / 解压",
+      "group": "批量",
+      "desc": "目录下每个顶层项各自打包，或把目录里所有压缩包各自解到独立子目录",
+      "deps": [
+        "stdlib"
+      ],
+      "optional": [
+        "py7zr",
+        "rarfile"
+      ],
+      "notes": "默认无需逐项确认：单份失败不中断整批，末尾统一汇总。",
+      "online": null
+    },
+    {
+      "id": "arc-info",
+      "name": "包信息与统计",
+      "group": "查看",
+      "desc": "格式、条目/文件/目录数、原始与压缩体积、压缩率、加密标记、注释，可输出 JSON",
+      "deps": [
+        "stdlib"
+      ],
+      "optional": [
+        "py7zr",
+        "rarfile"
+      ],
+      "notes": "压缩率按包体大小对原始字节数计算，负数表示小文件反被元数据撑大。",
+      "online": null
+    }
+  ]
+}
