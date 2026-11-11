@@ -8,7 +8,7 @@ runs on your own machine — no files are uploaded, no cloud APIs are called by
 default, and when a dependency is missing the skill tells you exactly what to
 install instead of pretending it succeeded.
 
-An optional online toolchain is available at **https://roroto.com/**. It is
+An optional online toolchain is available at [roroto.com](https://roroto.com/). It is
 referenced only as a fallback when a local dependency is missing, is **never
 called automatically**, and comes with no guarantee or commercial interest. See
 [About external references](#about-external-references).
@@ -41,7 +41,32 @@ called automatically**, and comes with no guarantee or commercial interest. See
 
 ## Install
 
-Copy a skill folder into your agent's skills directory, then restart the session.
+You can install **one**, **several**, or **all** skills. Each skill is a folder;
+the Releases page also ships one ready-made `.zip` per skill.
+
+### Option A — download a single skill (recommended for other agents)
+
+```bash
+VER=v1.4.1
+SKILL=privacy-all-done        # change to any of the 17 skill names
+curl -L -o "$SKILL.zip" "https://github.com/RoRoToCode/all-done-skills/releases/download/$VER/$SKILL.zip"
+unzip -o "$SKILL.zip" -d ~/.workbuddy/skills/   # or your agent's skills dir
+```
+
+### Option B — download all 17
+
+```bash
+VER=v1.4.1
+for s in ai-prompt-reader archive-all-done audio-all-done av-transcribe \
+         data-all-done doc-data-extract ebook-all-done file-all-done \
+         image-all-done ocr-workshop office-all-done pdf-workshop \
+         pipeline-all-done privacy-all-done text-all-done video-all-done web-capture; do
+  curl -L -o "$s.zip" "https://github.com/RoRoToCode/all-done-skills/releases/download/$VER/$s.zip"
+  unzip -o "$s.zip" -d ~/.workbuddy/skills/
+done
+```
+
+### Option C — copy from a cloned repo
 
 ```bash
 # WorkBuddy (default)
@@ -51,8 +76,11 @@ cp -r <skill>/ ~/.workbuddy/skills/<skill>/
 cp -r <skill>/ <agent-skills-dir>/<skill>/
 ```
 
-Or download the pre-built `.zip` for a skill from the **Releases** page, unzip
-into the skills directory. See `RELEASE_NOTES.md`.
+Restart the session after installing. **Note:** `pdf-workshop` and
+`doc-data-extract` call the host `workbuddy-pdf` CLI for some PDF actions and
+need a substitute on non-WorkBuddy agents (see Compatibility); the other 15 are
+pure standard-library / pip. `privacy-all-done` and `file-all-done` are the
+cleanest — zero dependencies, no host coupling.
 
 ## Compatibility
 

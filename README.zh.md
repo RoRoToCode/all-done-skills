@@ -5,7 +5,7 @@
 一组在本地运行的文档 / 媒体 / 图像 / 数据 / 压缩 / 隐私处理技能，共 **17 个技能、187 个动作**，当前版本 **1.4.1**。
 所有处理默认在本机完成，不上传原始文件；缺依赖时给本地安装指引，不伪装成功。
 
-可选在线工具链见 **https://roroto.com/**：仅在本地依赖缺失时作为备选参考列出，**不会自动调用**，不作担保、不从中获利。详见 [关于外部引用](#关于外部引用)。
+可选在线工具链见 [roroto.com](https://roroto.com/)：仅在本地依赖缺失时作为备选参考列出，**不会自动调用**，不作担保、不从中获利。详见 [关于外部引用](#关于外部引用)。
 
 > **快照声明**：本仓库是源码快照。主维护在 WorkBuddy 技能市场，这里提出的 Issue **不保证**会得到回复。
 
@@ -33,7 +33,31 @@
 
 ## 安装
 
-把技能目录拷进 agent 的技能目录，重启会话即可：
+可以装**一个**、**多个**或**全部**。每个技能是一个文件夹；Releases 页也为每个技能提供了一个现成的 `.zip`。
+
+### 方式 A — 只下一个技能（推荐给其它 agent）
+
+```bash
+VER=v1.4.1
+SKILL=privacy-all-done        # 改成 17 个技能名中的任意一个
+curl -L -o "$SKILL.zip" "https://github.com/RoRoToCode/all-done-skills/releases/download/$VER/$SKILL.zip"
+unzip -o "$SKILL.zip" -d ~/.workbuddy/skills/   # 或你的 agent 技能目录
+```
+
+### 方式 B — 一次下全部 17 个
+
+```bash
+VER=v1.4.1
+for s in ai-prompt-reader archive-all-done audio-all-done av-transcribe \
+         data-all-done doc-data-extract ebook-all-done file-all-done \
+         image-all-done ocr-workshop office-all-done pdf-workshop \
+         pipeline-all-done privacy-all-done text-all-done video-all-done web-capture; do
+  curl -L -o "$s.zip" "https://github.com/RoRoToCode/all-done-skills/releases/download/$VER/$s.zip"
+  unzip -o "$s.zip" -d ~/.workbuddy/skills/
+done
+```
+
+### 方式 C — 从克隆的仓库拷贝
 
 ```bash
 # WorkBuddy（默认）
@@ -43,7 +67,9 @@ cp -r <技能名>/ ~/.workbuddy/skills/<技能名>/
 cp -r <技能名>/ <agent-skills-dir>/<技能名>/
 ```
 
-或从 **Releases** 页面下载某个技能的 `.zip`，解压到技能目录。见 `RELEASE_NOTES.md`。
+装完重启会话即可。**注意**：`pdf-workshop` 与 `doc-data-extract` 的部分 PDF 动作会调用宿主
+`workbuddy-pdf` CLI，非 WorkBuddy 环境需替代（见兼容性）；其余 15 个纯标准库 / pip。
+`privacy-all-done` 与 `file-all-done` 最干净——零依赖、无宿主耦合。
 
 ## 兼容性
 
